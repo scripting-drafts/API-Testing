@@ -1,9 +1,8 @@
 # Restful API Framework
 
-A small Python test suite and framework for exercising the Restful-Booker API (https://restful-booker.herokuapp.com).  
-This repository contains integration-style pytest tests that exercise the main endpoints (ping, auth, create/list/get/update/patch/delete bookings). Tests are intended to run against the public demo service but can be adapted to use mocks for offline testing or CI.
+[![Tests](https://github.com/scripting-drafts/Restful-API-Framework/actions/workflows/tests.yml/badge.svg)](https://github.com/scripting-drafts/Restful-API-Framework/actions/workflows/tests.yml)
 
-> Note: The repository language is Python and the test suite uses `pytest` and `requests`.
+This repository contains integration-style pytest tests that exercise the main endpoints (ping, auth, create/list/get/update/patch/delete bookings). Tests are intended to run against the public demo service but can be adapted to use mocks for offline testing or CI.
 
 ## Quick start
 
@@ -85,13 +84,11 @@ If you prefer not to hit the live service:
   ```
 - Replace network calls in tests with mocked responses, or add a pytest fixture that toggles a `requests` adapter.
 
-If you want, we can provide a mocked test example or switch the suite to use recorded responses (vcrpy).
-
 ## Project layout (convention)
 
-- api/                 - optional in-repo application code (if applicable)
-- tests/               - pytest test modules (integration tests go here)
-  - conftest.py        - shared fixtures and sys.path adjustments (if needed)
+- api/                 - optional in-repo application code
+- tests/               - pytest test modules
+  - conftest.py        - shared fixtures and sys.path adjustments
 - requirements.txt     - Python dependencies
 - README.md
 
@@ -99,30 +96,3 @@ If you want, we can provide a mocked test example or switch the suite to use rec
 
 - Add a CI step to create a virtualenv, install `-r requirements.txt`, and run `pytest`.
 - For public demo tests, consider isolating or gating integration tests so CI does not fail due to external service outages. Use `pytest -m "not integration"` in fast CI pipelines, and run integration tests separately.
-
-Example GitHub Actions (concept)
-```yaml
-name: Python tests
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with: python-version: "3.10"
-      - run: python -m venv .venv && . .venv/bin/activate
-      - run: pip install -r requirements.txt
-      - run: pytest -q -m "not integration"
-```
-
-## Contributing
-
-- Open an issue or submit a PR with improvements.
-- Prefer small, focused PRs (fixes, additional tests, mock conversions).
-- Add tests for new behavior and make sure they pass locally before submitting.
-
-## Troubleshooting
-
-- Network failures: the demo server may be rate-limited or down. Retry later or run with mocked responses.
-- Authentication/permission errors: ensure correct credentials via environment variables.
